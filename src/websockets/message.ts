@@ -5,7 +5,7 @@ export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEven
   return {
     statusCode: 200,
     body: JSON.stringify({
-      message: 'Connected'
+      message: 'Received a message'
     })
   }
 };
