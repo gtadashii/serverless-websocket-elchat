@@ -1,0 +1,9 @@
+- data/**
+- .vscode/**
+- .idea/**
+- README.md
+- bin
+- bitbucket-pipelines.yml
+- .eslintrc
+- jest-dynalite-config.js
+- jest.config.json
