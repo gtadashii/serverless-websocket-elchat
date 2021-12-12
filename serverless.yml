@@ -21,6 +21,7 @@ custom:
   prune:
     automatic: true
     number: 3
+  connectionsTable: elchat-connection
 
 provider:
   name: aws
@@ -32,17 +33,39 @@ provider:
         - Effect: Allow
           Action:
             - dynamodb:*
-          Resource: "arn:aws:dynamodb:us-east-1:*:table/appointments-typescript-test"
+          Resource: "arn:aws:dynamodb:us-east-1:*:table/elchat-connection"
   lambdaHashingVersion: 20201221
+  environment:
+    CONNECTIONS_TABLE: ${self:custom.connectionsTable}
 
 functions:
+  websocket-connect: 
+    handler: src/websockets/connect.handler
+    events:
+      - websocket:
+            route: $connect
+  websocket-disconnect: 
+    handler: src/websockets/disconnect.handler
+    events:
+      - websocket:
+            route: $disconnect
+  websocket-default: 
+    handler: src/websockets/default.handler
+    events:
+      - websocket:
+            route: $default
+  websocket-message:
+    handler: src/websockets/message.handler
+    events:
+      - websocket:
+            route: message
 
 resources:
   Resources:
     dbAppointment:
       Type: AWS::DynamoDB::Table
       Properties:
-        TableName: appointments-typescript-test
+        TableName: ${self:custom.connectionsTable}
         ProvisionedThroughput:
           ReadCapacityUnits: 1
           WriteCapacityUnits: 1
